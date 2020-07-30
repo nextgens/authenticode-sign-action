@@ -1,0 +1,29 @@
+{
+  "name": "authenticode-sign-action",
+  "version": "1.0.0",
+  "description": "Sign files with a key hosted on google KMS.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && ncc build lib/index.js -m"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nextgens/authenticode-sign-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nextgens/authenticode-sign-action/issues"
+  },
+  "homepage": "https://github.com/nextgens/authenticode-sign-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.0",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "@types/node": "^12.11.1",
+    "@zeit/ncc": "^0.20.5",
+    "typescript": "^3.6.4"
+  }
+}

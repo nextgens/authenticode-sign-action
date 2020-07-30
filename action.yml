@@ -1,0 +1,24 @@
+name: 'Authenticode cloud signer'
+description: 'Code-sign files using a key hosted on google KMS.'
+branding:
+  icon: 'award'
+  color: 'green'
+inputs:
+  key-uri:
+    description: 'The google KMS resource ID to use.'
+    required: true
+  certificate:
+    description: 'The base64 encoded certificate chain to use (PEM).'
+    required: true
+  credentials:
+    description: 'The base64 encoded JSON credentials to use.'
+    required: true
+  folder:
+    description: 'The folder that contains the files to sign.'
+    required: true
+  recursive:
+    description: 'Recursively search for supported files.'
+    required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

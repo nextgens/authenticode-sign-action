@@ -11,7 +11,6 @@ const asyncExec = util.promisify(exec);
 const certificateFileName = env['TEMP'] + '\\cert.pem';
 const signtool = env['TEMP'] + '\\signtool.exe';
 const credentialsFileName = env['TEMP'] + '\\creds.json';
-const timestampUrl = 'http://timestamp.digicert.com';
 const toSignFileName = env['TEMP'] + '\\tosign.txt';
 
 const signtoolFileExtensions = [
@@ -62,15 +61,35 @@ function downloadCloudSignTool() {
 }
 
 async function signWithCloudSigntool() {
-    try {
-	const { stdout } = await asyncExec(`"${signtool}" sign -kac "${credentialsFileName}" -ac "${certificateFileName}" -tr "${timestampUrl}" -k "${core.getInput('key-uri')}" -ph -ifl "${toSignFileName}"`);
-        console.log(stdout);
-        return true;
-    } catch(err) {
-        console.log(err.stdout);
-        console.log(err.stderr);
-        return false;
-    }
+        try {
+        var options = "";
+        const timestampUrl = core.getInput('timestamp-url');
+        if(timestampUrl != "") {
+    	options += ` -tr \"${timestampUrl}\"`
+        }
+        const description = core.getInput('description');
+        if(description != "") {
+    	options += ` -d \"${description}\"`
+        }
+        const descriptionURL = core.getInput('description-url');
+        if(descriptionURL != "") {
+    	options += ` -du \"${descriptionURL}\"`
+    	}
+    	if(core.getInput('page-hash') == "true") {
+    	    options += ` -ph`
+    	} else {
+    	    options += ` -nph`
+    	}
+    	const cmd = `"${signtool}" sign -kac "${credentialsFileName}" -ac "${certificateFileName}" ${options} -k "${core.getInput('key-uri')}" -ifl "${toSignFileName}"`;
+    	console.log(cmd);
+    	const { stdout } = await asyncExec(cmd);
+    	console.log(stdout);
+    	return true;
+        } catch(err) {
+    	console.log(err.stdout);
+    	console.log(err.stderr);
+    	return false;
+        }
 }
 
 async function* getFiles(folder: string, recursive: boolean): any {

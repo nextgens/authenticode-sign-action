@@ -121,8 +121,8 @@ async function signFiles() {
     if(buffer.length > 0) {
        await fs.writeFile(toSignFileName, buffer.join("\r\n"));
        console.log(`Getting ready to talk to the cloud.`);
-       for (let i=0;i<10;i++) {
-           await sleep(i);
+       for (let i=0;i<6;i++) {
+           await sleep(2 ** i);
 	   if(await signWithCloudSigntool()) { return; }
        }
        throw `Failed to sign`; 

@@ -34,5 +34,5 @@ inputs:
     description: 'Recursively search for supported files.'
     required: false
 runs:
-  using: 'node12'
+  using: 'node20'
   main: 'dist/index.js'
